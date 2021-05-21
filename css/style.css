@@ -1,0 +1,30 @@
+body {
+  margin: 0px;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+}
+
+.top-container {
+  padding-top: 10px;
+  position: relative;
+  background-color: #e4f9f5;
+  text-align: center;
+}
+
+.middle-container {
+}
+
+.bottom-container {
+}
+
+.top-cloud {
+  position: absolute;
+  right: 300px;
+  top: 50px;
+}
+
+.bottom-cloud {
+  position: absolute;
+  left: 300px;
+  bottom: 300px;
+}
