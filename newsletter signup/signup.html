@@ -20,12 +20,12 @@
   </head>
 
   <body class="text-center">
-    <form class="form-signin">
+    <form action="/" method="post" class="form-signin">
       <img class="mb-4" src="images/neesleeter.png" alt="" width="72" height="72">
       <h1 class="h3 mb-3 font-weight-normal">Sign Up for newsletters</h1>
-      <input type="text" class="form-control top" placeholder="First Name" required autofocus>
-      <input type="text" class="form-control middle" placeholder="Last Name" required >
-      <input type="email" class="form-control bottom" placeholder="E-mail" required >
+      <input type="text" name="fName" class="form-control top" placeholder="First Name" required autofocus>
+      <input type="text" name="lName" class="form-control middle" placeholder="Last Name" required >
+      <input type="email" name="email" class="form-control bottom" placeholder="E-mail" required >
       <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
       <p class="mt-5 mb-3 text-muted">&copy; The Newsletter</p>
     </form>
