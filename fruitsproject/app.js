@@ -17,8 +17,8 @@ async function run() {
     const movies = database.collection('fruits');
 
     // Query for a movie that has the title 'Back to the Future'
-    const query = { name:"kiwi",taste:"kinda sour",review:"great" };
-    const result = await movies.insertOne(query);
+    const query = { name:"kiwi"};
+    const result = await movies.findOne(query);
 
     console.log(result);
   } finally {
