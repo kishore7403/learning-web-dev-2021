@@ -40,14 +40,16 @@ const defaultItems=[item1,item2,item3];
 
 
 
+const listSchema={
+    name:String,
+    items:[itemschema]
+}
+const List =mongoose.model("List",listSchema);
 
 
 
-let taskList = []
-let workList = [];
-var newItem = "";
+
 app.get("/", function (req, res) {
-    console.log(taskList,workList);
 
     Item.find({},function(err,founditems){
         if(founditems.length===0){
@@ -76,23 +78,33 @@ app.get("/", function (req, res) {
 
 app.post("/", function (req, res) {
     const itemName=req.body.newItem;
+    const listTitle=req.body.listTitle;
+
     const item= new Item({
         name: itemName
     });
-    item.save();
-    res.redirect("/");
+
+    if(listTitle==="Today"){
+        item.save();
+        res.redirect("/");
+        
+    }
+    else{
+        List.findOne({name:listTitle},function(err,foundList){
+            foundList.items.push(item);
+            foundList.save();
+            res.redirect("/"+listTitle);
+
+        })
+
+    }
 });
 
-app.get("/work", function (req, res) {
-    res.render("list", {
-        listTitle: "Work",
-        List: workList
-    });
-});
+
 
 app.post("/delete",function(req,res){
     const checkedItemId=req.body.checkBox;
-    Item.findByIdAndRemove(checkedItemId,function(err){
+    Item.findByIdAndDelete(checkedItemId,function(err){
         if(err){
             console.log("remove un-sucessfull");
         }
@@ -107,8 +119,27 @@ app.post("/delete",function(req,res){
 
 app.get("/:customListName",function(req,res){
     const customListName=req.params.customListName;
-    console.log(customListName);
-})
+
+    List.findOne({name: customListName},function(err,foundList){
+        if (!err){
+            if (!foundList){
+                const list= new List({
+                    name: customListName,
+                    items: defaultItems
+            
+                });
+                list.save();
+                res.redirect("/"+customListName);
+            }
+        else{
+                res.render("list", {
+                    listTitle: customListName,                                     
+                    Lists: foundList.items
+                });
+            }
+        }
+    });
+});
 
 
 app.listen(3000, function () {
