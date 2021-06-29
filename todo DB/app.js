@@ -90,6 +90,25 @@ app.get("/work", function (req, res) {
     });
 });
 
+app.post("/delete",function(req,res){
+    const checkedItemId=req.body.checkBox;
+    Item.findByIdAndRemove(checkedItemId,function(err){
+        if(err){
+            console.log("remove un-sucessfull");
+        }
+        else{
+            console.log("remove sucessfull");
+        }
+    });
+    res.redirect("/");
+
+});
+
+
+app.get("/:customListName",function(req,res){
+    const customListName=req.params.customListName;
+    console.log(customListName);
+})
 
 
 app.listen(3000, function () {

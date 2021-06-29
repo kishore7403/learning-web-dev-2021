@@ -17,10 +17,12 @@
 
     <div class="box">
         <%Lists.forEach(function(item){ %>
+        <form action="/delete" method="POST">
         <div class="item">
-            <input type="checkbox">
+            <input type="checkbox" name="checkBox" value="<%= item._id %>" onchange="this.form.submit()">
             <p><%= item.name %></p>
         </div>
+        </form>
         <% })%>
         <form class="item" action="/" method="POST">
             <input type="text" placeholder="New task" name="newItem" autocomplete="off">
