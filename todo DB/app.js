@@ -38,14 +38,7 @@ const item3=new Item({
 
 const defaultItems=[item1,item2,item3];
 
-Item.insertMany(defaultItems,function(err){
-    if(err){
-        console.log(err);
-    }
-    else{
-        console.log("Sucess")
-    }
-})
+
 
 
 
@@ -56,38 +49,38 @@ var newItem = "";
 app.get("/", function (req, res) {
     console.log(taskList,workList);
 
-    Item.find(function(err,founditems){
-        if(err){
-            console.log(err);
-        }
+    Item.find({},function(err,founditems){
+        if(founditems.length===0){
+            Item.insertMany(defaultItems,function(err){
+                if(err){
+                    console.log(err);
+                }
+                else{
+                console.log("saved default items");
+                }
+            });  
+        res.redirect("/")
+        }  
         else{
             res.render("list", {
                 listTitle: "Today",                                      //pass day() instead of "Today" for date.
                 Lists: founditems
             });
-        }
+            }
+            
     });
-    
-    
-    
-    
-
-    
+ 
 });
 
 
 
 app.post("/", function (req, res) {
-    if (req.body.button === "Work") {
-        newItem = req.body.newItem;
-        workList.push(newItem);
-        res.redirect("/work");
-    } else {
-
-        newItem = req.body.newItem;
-        taskList.push(newItem);
-        res.redirect("/");
-    }
+    const itemName=req.body.newItem;
+    const item= new Item({
+        name: itemName
+    });
+    item.save();
+    res.redirect("/");
 });
 
 app.get("/work", function (req, res) {
