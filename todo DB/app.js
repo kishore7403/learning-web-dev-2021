@@ -2,6 +2,7 @@ const express = require("express");
 // const day=require(__dirname+"/date.js");
 const mongoose=require("mongoose");
 const app = express();
+const _=require("lodash");
 
 
 
@@ -12,8 +13,8 @@ app.use(express.static("public"));
 app.set('view engine', 'ejs');
 
 
-mongoose.connect("mongodb://localhost:27017/todolist",{ useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true }).then(() => console.log( 'Database Connected' ))
-.catch(err => console.log( err ));;
+mongoose.connect("mongodb+srv://kishore:1234@cluster0.q4gs6.mongodb.net/todolist?retryWrites=true&w=majority",{ useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true }).then(() => console.log( 'Database Connected' ))
+.catch(err => console.log( err ));
 
 const itemschema=new mongoose.Schema({
     name:String
@@ -104,21 +105,35 @@ app.post("/", function (req, res) {
 
 app.post("/delete",function(req,res){
     const checkedItemId=req.body.checkBox;
-    Item.findByIdAndDelete(checkedItemId,function(err){
-        if(err){
-            console.log("remove un-sucessfull");
-        }
-        else{
-            console.log("remove sucessfull");
-        }
-    });
-    res.redirect("/");
+    const listTitle=req.body.listTitle;
+
+    if(listTitle==="Today"){
+        Item.findByIdAndDelete(checkedItemId,function(err){
+            if(err){
+                console.log("remove un-sucessfull");
+            }
+            else{
+                console.log("remove sucessfull");
+                res.redirect("/");
+            }
+
+        });
+    }    
+    else{
+        mongoose.set('useFindAndModify', false);
+        List.findOneAndUpdate({name:listTitle},{$pull:{items:{_id:checkedItemId}}},function(err,foundList){
+            if(!err){
+                res.redirect("/"+listTitle)
+            }
+
+        });
+    }
 
 });
 
 
 app.get("/:customListName",function(req,res){
-    const customListName=req.params.customListName;
+    const customListName=_.capitalize(req.params.customListName);
 
     List.findOne({name: customListName},function(err,foundList){
         if (!err){
