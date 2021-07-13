@@ -13,13 +13,12 @@ app.use(express.static("public"));
 app.set('view engine', 'ejs');
 
 
-mongoose.connect("mongodb+srv://kishore:1234@cluster0.q4gs6.mongodb.net/todolist?retryWrites=true&w=majority",{ useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true }).then(() => console.log( 'Database Connected' ))
+mongoose.connect("mongodb+srv://kishore:1234@cluster0.q4gs6.mongodb.net/todolist",{ useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true }).then(() => console.log( 'Database Connected' ))
 .catch(err => console.log( err ));
 
 const itemschema=new mongoose.Schema({
     name:String
 });
-
 const Item= mongoose.model("Item",itemschema);
 
 const item1=new Item({
