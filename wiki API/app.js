@@ -98,6 +98,17 @@ app.route("/articles/:articleTitle")
 
 })
 
+.delete(function(req,res){
+    Article.deleteOne(
+        {title:req.params.articleTitle},
+        function(err){
+            if(!err){
+                res.send("dlete sucessfull")
+            }
+        }
+    )
+})
+
 app.listen(3000, function () {
     console.log("server is up and running");
 })
