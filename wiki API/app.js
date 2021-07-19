@@ -80,7 +80,23 @@ app.route("/articles/:articleTitle")
             }
         }
     )
-});
+})
+
+.patch(function(req,res){
+    Article.updateOne(
+        {title:req.params.articleTitle},
+        {$set:req.body},  ///updates only params given 
+        function(err){
+            if(!err){
+                res.send("patch update sucessfull")
+            }
+            else{
+                res.send(err);
+            }
+        }    
+    )
+
+})
 
 app.listen(3000, function () {
     console.log("server is up and running");
