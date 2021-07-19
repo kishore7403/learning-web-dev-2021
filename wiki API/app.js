@@ -69,6 +69,19 @@ app.route("/articles/:articleTitle")
     })
 })
 
+.put(function(req,res){
+    Article.replaceOne(
+        {title:req.params.articleTitle},
+        {title:req.body.title, content:req.body.content},
+        {overwrite:true},
+        function(err){
+            if(!err){
+                res.send("sucessfully updated")
+            }
+        }
+    )
+});
+
 app.listen(3000, function () {
     console.log("server is up and running");
 })
